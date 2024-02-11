@@ -1,5 +1,3 @@
-import json
-
 def caesar_cipher(text: str, key: int, alphabet: str = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ") -> str:
     encrypted_text = ""
     for letter in text:
@@ -11,9 +9,6 @@ def caesar_cipher(text: str, key: int, alphabet: str = "АБВГДЕЁЖЗИЙК
             encrypted_text += letter
     return encrypted_text
 
-def write_frequency(path: str) -> str:
-    with open(path, 'r', encoding='UTF-8') as file:
-        return json.load(file)
 
 def frequency_analysis(text: str) -> dict:
     frequency = {}
@@ -25,6 +20,7 @@ def frequency_analysis(text: str) -> dict:
     for key in frequency:
         frequency[key] = frequency[key] / len(text)
     return dict(sorted(frequency.items(), key=lambda x: x[1], reverse=True))
+
 
 def decryption_by_key(code: str, key: dict) -> str:
     for letter in key:
