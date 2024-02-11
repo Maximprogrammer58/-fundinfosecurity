@@ -1,39 +1,32 @@
 import json
-from collections import Counter
-from random import sample
 
-
-def create_key(alphabet: str = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ") -> str:
-    return "".join(sample(alphabet, len(alphabet)))
-
-
-def encryption(text: str, key: str, alphabet: str = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ") -> str:
-    text_list = list(text)
-    for i in range(len(text_list)):
-        if text_list[i] in alphabet:
-            text_list[i] = key[alphabet.find(text_list[i])]
-    return "".join(text_list)
-
-def caesar_cipher_encode(text: str, key: int, alphabet: str = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ") -> str:
-    encoded_text = ""
+def caesar_cipher(text: str, key: int, alphabet: str = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ") -> str:
+    encrypted_text = ""
     for letter in text:
         if letter in alphabet:
             unicode = ord(letter) - ord(alphabet[0])
-            encoded_unicode = (unicode + key) % 32 + ord(alphabet[0])
-            encoded_text += chr(encoded_unicode)
+            encrypted_unicode = (unicode + key) % 32 + ord(alphabet[0])
+            encrypted_text += chr(encrypted_unicode)
         else:
-            encoded_text += letter
-    return encoded_text
-
+            encrypted_text += letter
+    return encrypted_text
 
 def write_frequency(path: str) -> str:
     with open(path, 'r', encoding='UTF-8') as file:
         return json.load(file)
 
+def frequency_analysis(text: str) -> dict:
+    frequency = {}
+    for letter in text:
+        if letter in frequency:
+            frequency[letter] += 1
+        else:
+            frequency[letter] = 1
+    for key in frequency:
+        frequency[key] = frequency[key] / len(text)
+    return dict(sorted(frequency.items(), key=lambda x: x[1], reverse=True))
 
-def frequency_analysis():
-    pass
-
-
-def replacing_letter():
-    pass
+def decryption_by_key(code: str, key: dict) -> str:
+    for letter in key:
+        code = code.replace(letter, key[letter])
+    return code
